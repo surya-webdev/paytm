@@ -21,6 +21,8 @@ async function authMiddleware(req, res, next) {
     const users = await user.findOne({ _id: decode.userId });
 
     next();
+
+    //
   } catch {
     res.status(403).json({
       message: "ERROR ",
@@ -79,6 +81,8 @@ async function filterMiddleware(req, res, next) {
   }
 }
 
+// account
+
 async function getBalanceMiddleware(req, res, next) {
   const userId = req.headers.userid;
 
@@ -96,6 +100,8 @@ async function getBalanceMiddleware(req, res, next) {
     res.send({ Message: "Couldn't find the user " });
   }
 }
+
+// transfer
 
 module.exports = {
   authMiddleware,
