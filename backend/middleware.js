@@ -2,7 +2,7 @@ const jwt = require("jsonwebtoken");
 
 const { jwt_secret } = require("./config");
 
-const { user } = require("./db");
+const { user, account } = require("./db");
 
 async function authMiddleware(req, res, next) {
   const userId = req.headers.id;
@@ -79,4 +79,27 @@ async function filterMiddleware(req, res, next) {
   }
 }
 
-module.exports = { authMiddleware, updateMiddleware, filterMiddleware };
+async function getBalanceMiddleware(req, res, next) {
+  const userId = req.headers.userid;
+
+  try {
+    const user = await account.findOne({ userId });
+
+    if (!userId || !user) {
+      res.send({ Message: "Couldn't find the balace of the user " });
+    }
+
+    res.send({
+      balance: user.balance,
+    });
+  } catch {
+    res.send({ Message: "Couldn't find the user " });
+  }
+}
+
+module.exports = {
+  authMiddleware,
+  updateMiddleware,
+  filterMiddleware,
+  getBalanceMiddleware,
+};
