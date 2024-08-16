@@ -31,7 +31,13 @@ router.post("/signup", async function (req, res, next) {
 
   const userSchema = mySchema.safeParse(req.body);
 
-  if (!userSchema.success || !userName || !password) {
+  if (
+    !userSchema.success ||
+    !userName ||
+    !password ||
+    !firstName ||
+    !lastName
+  ) {
     res.send({
       messgae: "ERROR",
     });

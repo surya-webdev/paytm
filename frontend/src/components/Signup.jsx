@@ -1,12 +1,13 @@
 import { useState } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 function Signup() {
   const [firstName, setFirstName] = useState("hermoine");
   const [lastName, setLastName] = useState("h");
   const [isMail, setisMail] = useState("hermoine@gmail.com");
   const [password, setPassword] = useState("1234567890");
-
+  const navigate = useNavigate();
   return (
     <>
       <div className="mx-auto my-10 flex w-2/4 flex-col items-center justify-center">
@@ -18,6 +19,7 @@ function Signup() {
         <form
           onSubmit={async (e) => {
             e.preventDefault();
+
             const res = await axios.post(
               "http://localhost:3000/api/v1/user/signup",
               {
