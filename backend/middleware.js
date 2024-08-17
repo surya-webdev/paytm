@@ -5,13 +5,15 @@ const { jwt_secret } = require("./config");
 const { user, account } = require("./db");
 
 async function authMiddleware(req, res, next) {
-  const userId = req.headers.id;
-
+  // const userId = req.headers.id;
+  console.log(req.headers);
   const auth = req.headers.authorization;
 
   if (!auth || !auth.startsWith("Bearer")) {
     res.status("404").json({});
   }
+
+  console.log(auth);
 
   const token = auth.split(" ").at(1);
 
@@ -19,6 +21,8 @@ async function authMiddleware(req, res, next) {
     const decode = jwt.verify(token, jwt_secret);
 
     const users = await user.findOne({ _id: decode.userId });
+
+    res.locals.user = users;
 
     next();
 
@@ -43,7 +47,7 @@ async function updateMiddleware(req, res, next) {
     });
 
   const existingUser = await user.findOne({ userName });
-  console.log(existingUser);
+
   if (!existingUser)
     return res.send({
       Message: "Couldn't find the user , please the username:(",
@@ -84,6 +88,7 @@ async function filterMiddleware(req, res, next) {
 // account
 
 async function getBalanceMiddleware(req, res, next) {
+  //
   const userId = req.headers.userid;
 
   try {
@@ -92,7 +97,6 @@ async function getBalanceMiddleware(req, res, next) {
     if (!userId || !user) {
       res.send({ Message: "Couldn't find the balace of the user " });
     }
-
     res.send({
       balance: user.balance,
     });

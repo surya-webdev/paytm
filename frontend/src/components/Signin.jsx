@@ -1,3 +1,5 @@
+import { Link } from "react-router-dom";
+
 function Signin() {
   return (
     <div className="mx-auto my-10 flex w-2/4 flex-col items-center justify-center">
@@ -33,9 +35,9 @@ function Signin() {
         <p>
           Create your own account{" "}
           <span>
-            <a className="font-semibold underline" href="/">
+            <Link className="font-semibold underline" to="/signup">
               Signup
-            </a>
+            </Link>
           </span>
         </p>
       </div>

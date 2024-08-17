@@ -1,7 +1,30 @@
+import { useEffect, useState } from "react";
 import { Balance } from "../pages/Balance";
 import { Users } from "../pages/Users";
+import axios from "axios";
 
 function Dashboard() {
+  // user and account
+
+  const [user, setUser] = useState();
+
+  const token = localStorage.getItem("token");
+  console.log(token);
+
+  useEffect(() => {
+    async function getData() {
+      const res = axios.post("http://localhost:3000/api/v1/user/dashboard", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      setUser(res.user);
+      console.log(res);
+    }
+    getData();
+  }, [token, setUser]);
+
   return (
     <>
       <div className="flex h-14 justify-between shadow">

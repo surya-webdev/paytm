@@ -70,13 +70,15 @@ router.post("/signup", async function (req, res, next) {
       message: "User created successfully",
       token,
     });
-    //
   }
 });
 
 router.get("/signin", authMiddleware, function (req, res, next) {
+  //
+
   res.send({
-    messgae: "UPDATED",
+    messgae: true,
+    user: res.locals.user,
   });
 });
 
@@ -87,5 +89,15 @@ router.put("/", updateMiddleware, function (req, res, next) {
 });
 
 router.get("/bulk", filterMiddleware, function (req, res, next) {});
+
+router.post("/dashboard", authMiddleware, function (req, res, next) {
+  res.send({
+    messgae: true,
+    user: res.locals.user,
+  });
+  // to get the current user and other users data
+
+  // able send transfer the money !
+});
 
 module.exports = router;

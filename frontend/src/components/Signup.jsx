@@ -1,6 +1,6 @@
 import { useState } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 function Signup() {
   const [firstName, setFirstName] = useState("hermoine");
@@ -29,8 +29,12 @@ function Signup() {
                 password,
               },
             );
-            console.log(res);
+
             localStorage.setItem("token", res.data.token);
+            navigate("/dashboard");
+            // proteced the routes by context api! , redirecting them to a dashboard ,
+
+            // how i get the useruser's account.
           }}
           className="flex w-[60%] flex-col py-2"
         >
@@ -82,11 +86,11 @@ function Signup() {
         </form>
         <div>
           <p>
-            Already you have an account{" "}
+            Already you have an account
             <span>
-              <a className="font-semibold underline" href="/signin">
+              <Link className="font-semibold underline" to="/signin">
                 Login
-              </a>
+              </Link>
             </span>
           </p>
         </div>
