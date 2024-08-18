@@ -1,4 +1,8 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import Button from "../components/Button";
+import { Transfer } from "./Transfer";
+import { Link } from "react-router-dom";
 
 export const Users = () => {
   // Replace with backend call
@@ -9,6 +13,30 @@ export const Users = () => {
       _id: 1,
     },
   ]);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const token = localStorage.getItem("token");
+  useEffect(() => {
+    async function getData() {
+      const res = await axios.post(
+        "http://localhost:3000/api/v1/user//others",
+        {},
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        },
+      );
+      console.log(res.data.users);
+      setUsers(res.data.users);
+    }
+    getData();
+
+    //
+  }, [token]);
+
+  if (isLoading) return <p>....Loading</p>;
 
   return (
     <>
@@ -22,7 +50,7 @@ export const Users = () => {
       </div>
       <div>
         {users.map((user) => (
-          <User key={user} user={user} />
+          <User key={user.id} user={user} />
         ))}
       </div>
     </>
@@ -35,7 +63,7 @@ function User({ user }) {
       <div className="flex">
         <div className="mr-2 mt-1 flex h-12 w-12 justify-center rounded-full bg-slate-200">
           <div className="flex h-full flex-col justify-center text-xl">
-            {user.firstName[0]}
+            {user?.firstName[0]}
           </div>
         </div>
         <div className="h-ful flex flex-col justify-center">
@@ -46,7 +74,7 @@ function User({ user }) {
       </div>
 
       <div className="h-ful flex flex-col justify-center">
-        {/* <Button label={"Send Money"} /> */}
+        <Link to="/transfer">Send Money</Link>
       </div>
     </div>
   );

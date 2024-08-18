@@ -5,10 +5,11 @@ const { account } = require("../db");
 
 const router = express.Router();
 
-router.get("/balance", getBalanceMiddleware, function (req, res, next) {
+router.post("/balance", getBalanceMiddleware, function (req, res, next) {
   res.send({
     message: "DONE",
   });
+  //
 });
 
 router.post("/transfer", async function (req, res, next) {
@@ -17,6 +18,8 @@ router.post("/transfer", async function (req, res, next) {
   const session = await mongoose.startSession();
 
   await session.startTransaction();
+
+  // current user!!!!!!!
 
   const { userid } = req.headers;
 
@@ -28,7 +31,7 @@ router.post("/transfer", async function (req, res, next) {
 
   const transferUser = await account.findOne({ userId: to }).session(session);
 
-  console.log(userAccount);
+  // console.log(userAccount);
 
   if (userAccount.balance < amount) {
     await session.abortTransaction();

@@ -29,11 +29,9 @@ function Signup() {
                 password,
               },
             );
-
             localStorage.setItem("token", res.data.token);
             navigate("/dashboard");
             // proteced the routes by context api! , redirecting them to a dashboard ,
-
             // how i get the useruser's account.
           }}
           className="flex w-[60%] flex-col py-2"

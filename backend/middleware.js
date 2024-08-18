@@ -6,14 +6,15 @@ const { user, account } = require("./db");
 
 async function authMiddleware(req, res, next) {
   // const userId = req.headers.id;
-  console.log(req.headers);
+  // console.log(req.headers);
+  //
   const auth = req.headers.authorization;
 
   if (!auth || !auth.startsWith("Bearer")) {
-    res.status("404").json({});
+    return res
+      .status("404")
+      .json({ message: "Authorization header is missing" });
   }
-
-  console.log(auth);
 
   const token = auth.split(" ").at(1);
 
@@ -62,6 +63,7 @@ async function updateMiddleware(req, res, next) {
 }
 
 async function filterMiddleware(req, res, next) {
+  //
   const filter = req.query.filter || "";
 
   if (!filter)
@@ -89,19 +91,24 @@ async function filterMiddleware(req, res, next) {
 
 async function getBalanceMiddleware(req, res, next) {
   //
+  // console.log(req.headers);
+
   const userId = req.headers.userid;
+
+  // console.log(req.headers);
 
   try {
     const user = await account.findOne({ userId });
-
+    console.log(user);
     if (!userId || !user) {
-      res.send({ Message: "Couldn't find the balace of the user " });
+      return res.send({ Message: "Couldn't find the balace of the user " });
     }
+
     res.send({
       balance: user.balance,
     });
   } catch {
-    res.send({ Message: "Couldn't find the user " });
+    res.send({ Message: "Couldn't find the user" });
   }
 }
 

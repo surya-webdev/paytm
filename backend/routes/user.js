@@ -24,6 +24,7 @@ const mySchema = z.object({
 });
 
 router.post("/signup", async function (req, res, next) {
+  //
   const userName = req.body.userName;
   const password = req.body.password;
   const firstName = req.body.firstName;
@@ -96,8 +97,28 @@ router.post("/dashboard", authMiddleware, function (req, res, next) {
     user: res.locals.user,
   });
   // to get the current user and other users data
-
   // able send transfer the money !
+});
+
+router.post("/others", authMiddleware, async function (req, res, next) {
+  //
+  const id = res.locals.user.id;
+
+  try {
+    const users = await user.find();
+
+    const filtered = users.filter((user) => user.id !== id);
+    res.send({
+      users: filtered,
+    });
+
+    if (!users || !filtered)
+      return res.status(403).json({
+        messgae: "NO data's found",
+      });
+  } catch (error) {
+    res.send("ERROR", error);
+  }
 });
 
 module.exports = router;

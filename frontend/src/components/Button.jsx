@@ -1,7 +1,8 @@
-function Button({ children, onClick, disabled }) {
+function Button({ children, onClick, href, disabled }) {
   return (
     <button
-      className="my-10 rounded-lg bg-black px-2 py-2 text-white"
+      href={href}
+      className="mx-6 rounded-lg bg-black px-2 py-2 text-white"
       disabled={disabled}
       onClick={onClick}
     >
