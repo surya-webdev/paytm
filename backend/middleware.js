@@ -19,6 +19,8 @@ async function authMiddleware(req, res, next) {
   const token = auth.split(" ").at(1);
 
   try {
+    // current user
+
     const decode = jwt.verify(token, jwt_secret);
 
     const users = await user.findOne({ _id: decode.userId });
@@ -26,7 +28,6 @@ async function authMiddleware(req, res, next) {
     res.locals.user = users;
 
     next();
-
     //
   } catch {
     res.status(403).json({

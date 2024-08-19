@@ -1,10 +1,40 @@
-import { useState } from "react";
+import axios from "axios";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
 
 export const Transfer = ({ user }) => {
-  // const [searchParams] = useSearchParams();
-  // const id = searchParams.get("id");
-  // const name = searchParams.get("name");
+  //
+  const { id } = useParams();
+
+  const [isLoading, setIsLoading] = useState(true);
   const [amount, setAmount] = useState(0);
+  const [currUser, setCurrUser] = useState(null);
+
+  useEffect(() => {
+    async function getData() {
+      setIsLoading(true);
+      try {
+        const res = await axios.post(
+          "http://localhost:3000/api/v1/user/send",
+          {},
+          {
+            headers: {
+              id,
+            },
+          },
+        );
+        // console.log(res.data);
+        setCurrUser(() => res.data.user);
+      } catch (error) {
+        console.error("ERROR", error.message);
+      } finally {
+        setIsLoading(false);
+      }
+    }
+    getData();
+  }, [id]);
+
+  if (isLoading) return <p>....Loading</p>;
 
   return (
     <div className="flex h-screen justify-center bg-gray-100">
@@ -17,10 +47,10 @@ export const Transfer = ({ user }) => {
             <div className="flex items-center space-x-4">
               <div className="flex h-12 w-12 items-center justify-center rounded-full bg-green-500">
                 <span className="text-2xl text-white">
-                  {/* {user.firstName.split(" ")[0].toUpperCase()} */}
+                  {currUser.firstName.split("")[0].toUpperCase()}
                 </span>
               </div>
-              <h3 className="text-2xl font-semibold">{"s"}</h3>
+              <h3 className="text-2xl font-semibold">{currUser.firstName}</h3>
             </div>
             <div className="space-y-4">
               <div className="space-y-2">

@@ -4,12 +4,12 @@ const { getBalanceMiddleware } = require("../middleware");
 const { account } = require("../db");
 
 const router = express.Router();
+// 95 http request
 
 router.post("/balance", getBalanceMiddleware, function (req, res, next) {
   res.send({
     message: "DONE",
   });
-  //
 });
 
 router.post("/transfer", async function (req, res, next) {
@@ -22,9 +22,8 @@ router.post("/transfer", async function (req, res, next) {
   // current user!!!!!!!
 
   const { userid } = req.headers;
-
   const { to, amount } = req.body;
-
+  //
   const userAccount = await account
     .findOne({ userId: userid })
     .session(session);
@@ -61,6 +60,7 @@ router.post("/transfer", async function (req, res, next) {
   res.json({
     message: "Transfer successful",
   });
+  //
 });
 
 module.exports = router;

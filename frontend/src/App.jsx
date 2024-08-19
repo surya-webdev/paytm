@@ -11,7 +11,7 @@ function App() {
         <Route index path="/signup" element={<Signup />}></Route>
         <Route path="/signin" element={<Signin />} />
         <Route path="/dashboard" element={<Dashboard />}></Route>
-        <Route path="/transfer" element={<Transfer />} />
+        <Route path="/transfer/:id" element={<Transfer />} />
       </Routes>
     </BrowserRouter>
   );

@@ -6,21 +6,17 @@ import { Link } from "react-router-dom";
 
 export const Users = () => {
   // Replace with backend call
-  const [users, setUsers] = useState([
-    {
-      firstName: "Harkirat",
-      lastName: "Singh",
-      _id: 1,
-    },
-  ]);
+  const [users, setUsers] = useState([]);
 
   const [isLoading, setIsLoading] = useState(false);
 
   const token = localStorage.getItem("token");
+
   useEffect(() => {
     async function getData() {
+      setIsLoading(true);
       const res = await axios.post(
-        "http://localhost:3000/api/v1/user//others",
+        "http://localhost:3000/api/v1/user/others",
         {},
         {
           headers: {
@@ -28,11 +24,12 @@ export const Users = () => {
           },
         },
       );
-      console.log(res.data.users);
+      console.log(res.data);
       setUsers(res.data.users);
+      setIsLoading(false);
     }
-    getData();
 
+    getData();
     //
   }, [token]);
 
@@ -74,7 +71,7 @@ function User({ user }) {
       </div>
 
       <div className="h-ful flex flex-col justify-center">
-        <Link to="/transfer">Send Money</Link>
+        <Link to={`/transfer/${user._id}`}>Send Money</Link>
       </div>
     </div>
   );

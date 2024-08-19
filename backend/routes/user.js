@@ -102,6 +102,7 @@ router.post("/dashboard", authMiddleware, function (req, res, next) {
 
 router.post("/others", authMiddleware, async function (req, res, next) {
   //
+
   const id = res.locals.user.id;
 
   try {
@@ -117,7 +118,32 @@ router.post("/others", authMiddleware, async function (req, res, next) {
         messgae: "NO data's found",
       });
   } catch (error) {
-    res.send("ERROR", error);
+    res.send({ message: "Couldn't find users" });
+  }
+});
+
+router.post("/send", async function (req, res, next) {
+  //
+  const id = req.headers.id;
+  console.log(req.headers);
+  console.log(req.headers.id);
+  if (!id)
+    return res.status(403).json({
+      message: "NO VALID ID",
+    });
+
+  //
+  try {
+    const SendUser = await user.findOne({ _id: id });
+    console.log(SendUser);
+
+    res.send({
+      user: SendUser,
+    });
+  } catch {
+    res.status(400).json({
+      messgae: "USER NOT FOUND",
+    });
   }
 });
 
