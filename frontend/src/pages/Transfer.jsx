@@ -9,6 +9,7 @@ export const Transfer = ({ user }) => {
   const [isLoading, setIsLoading] = useState(true);
   const [amount, setAmount] = useState(0);
   const [currUser, setCurrUser] = useState(null);
+  const token = localStorage.getItem("token");
 
   useEffect(() => {
     async function getData() {
@@ -61,6 +62,7 @@ export const Transfer = ({ user }) => {
                   Amount (in Rs)
                 </label>
                 <input
+                  value={amount}
                   onChange={(e) => {
                     setAmount(e.target.value);
                   }}
@@ -70,7 +72,32 @@ export const Transfer = ({ user }) => {
                   placeholder="Enter amount"
                 />
               </div>
-              <button className="ring-offset-background h-10 w-full justify-center rounded-md bg-green-500 px-4 py-2 text-sm font-medium text-white transition-colors">
+              <button
+                onClick={() => {
+                  async function getdata() {
+                    const response = await axios.post(
+                      "http://localhost:3000/api/v1/account/transfer",
+                      {
+                        to: id,
+                        amount,
+                      },
+                      {
+                        headers: {
+                          Authorization: `Bearer ${token}`,
+                        },
+                      },
+                    );
+                    if (response.data.status) {
+                      setAmount(() => 0);
+
+                      // alert("PAYMENT SUCESS");
+                    }
+                    console.log(response.data);
+                  }
+                  getdata();
+                }}
+                className="ring-offset-background h-10 w-full justify-center rounded-md bg-green-500 px-4 py-2 text-sm font-medium text-white transition-colors"
+              >
                 Initiate Transfer
               </button>
             </div>
